@@ -23,3 +23,8 @@ jobs:
     steps:
       - name: can I see the other job's file
         run: cat artifact.txt || echo "NO SHARED DISK"
+
+  parallel_one:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 10 && echo "I did not wait for anyone"
