@@ -1,0 +1,19 @@
+name: hello
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  first:
+    runs-on: ubuntu-latest
+    steps:
+      - name: who triggered me
+        run: echo "event=${{ github.event_name }} ref=${{ github.ref }} sha=${{ github.sha }}"
+      - name: where am I
+        run: |
+          whoami
+          pwd
+          ls -la
