@@ -1,0 +1,25 @@
+{
+  "name": "ci-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivemcfire/ci-basics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivemcfire/ci-basics/issues"
+  },
+  "homepage": "https://github.com/ivemcfire/ci-basics#readme",
+  "devDependencies": {
+    "eslint": "^10.14.0"
+  },
+  "type": "module"
+}
