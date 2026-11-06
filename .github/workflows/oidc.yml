@@ -1,0 +1,20 @@
+name: oidc-check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  whoami:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-deploy
+          aws-region: eu-west-1
+
+      - run: aws sts get-caller-identity
+      - run: aws s3 ls
