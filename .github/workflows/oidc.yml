@@ -17,4 +17,4 @@ jobs:
           aws-region: eu-west-1
 
       - run: aws sts get-caller-identity
-      - run: aws s3 ls
+      - run: aws s3 ls s3://ivx-oidc-demo-817210751918
