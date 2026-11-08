@@ -58,3 +58,28 @@ jobs:
           name: package
           path: dist
       - run: ls -la dist
+
+  push-image:
+    needs: [lint, test]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-deploy
+          aws-region: eu-west-1
+
+      - id: login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: build and push
+        env:
+          IMAGE: ${{ steps.login.outputs.registry }}/ci-basics:${{ github.sha }}
+        run: |
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
