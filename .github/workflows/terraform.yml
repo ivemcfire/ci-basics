@@ -15,7 +15,7 @@ jobs:
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-deploy
+          role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-plan
           aws-region: eu-west-1
 
       - uses: hashicorp/setup-terraform@v3
@@ -43,7 +43,8 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const plan = fs.readFileSync('infra/plan.txt', 'utf8');
+            const p = 'infra/plan.txt';
+            const plan = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : 'plan did not run - see the job log';
             const body = `#### \`terraform plan\` — \`${{ job.status }}\`\n\n<details><summary>show plan</summary>\n\n\`\`\`terraform\n${plan.slice(-60000)}\n\`\`\`\n\n</details>`;
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
