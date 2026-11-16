@@ -8,9 +8,14 @@ terraform {
   }
 }
 
-# local state on purpose today: the S3 backend is its own bootstrap stack (W3D5),
-# and we are not practicing that here.
 provider "aws" {
   region = var.region
-  # no profile = here: credentials come from the environment, never the code
+
+  default_tags {
+    tags = {
+      Project   = var.name
+      ManagedBy = "github-actions"
+      Env       = "lab"
+    }
+  }
 }
