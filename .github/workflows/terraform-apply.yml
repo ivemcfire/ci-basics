@@ -1,0 +1,26 @@
+name: terraform-apply
+on:
+  push:
+    branches: ["main"]
+    paths: ["infra/**"]
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-deploy
+          aws-region: eu-west-1
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - run: terraform init
+        working-directory: infra
+      - run: terraform apply -auto-approve -var home_cidr=${{ vars.HOME_CIDR }}
+        working-directory: infra
