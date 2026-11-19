@@ -3,5 +3,5 @@ output "alb_url" {
 }
 
 output "ecr_repo" {
-  value = aws_ecr_repository.web.repository_url
+  value = data.aws_ecr_repository.web.repository_url
 }
