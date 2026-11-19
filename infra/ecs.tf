@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "web" {
 
   container_definitions = jsonencode([{
     name         = "web"
-    image        = "${aws_ecr_repository.web.repository_url}@${var.image_digest}"
+    image        = "${data.aws_ecr_repository.web.repository_url}@${var.image_digest}"
     essential    = true
     portMappings = [{ containerPort = 8080, protocol = "tcp" }]
     logConfiguration = {
