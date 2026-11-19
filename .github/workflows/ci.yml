@@ -83,29 +83,6 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.login.outputs.registry }}/ci-basics:${{ github.sha }}
-    deploy:
-    needs: push-image
-    runs-on: ubuntu-latest
-    environment: prod
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v5
-      - uses: aws-actions/configure-aws-credentials@v5
-        with:
-          role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-deploy
-          aws-region: eu-west-1
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
-      - run: terraform init
-        working-directory: infra
-      - run: |
-          terraform apply -auto-approve \
-            -var home_cidr=${{ vars.HOME_CIDR }} \
-            -var image_digest=${{ needs.push-image.outputs.digest }}
-        working-directory: infra
   deploy:
     needs: push-image
     runs-on: ubuntu-latest
