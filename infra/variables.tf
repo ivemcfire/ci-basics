@@ -16,5 +16,4 @@ variable "home_cidr" {
 variable "image_digest" {
   description = "pin the image by content, not by tag"
   type        = string
-  default     = "sha256:92987e57bbd8688466738124b33a2935d9d89f8a1b623c89f7e927fcd4e543bc"
 }
