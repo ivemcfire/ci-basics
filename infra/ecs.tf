@@ -1,3 +1,7 @@
+
+locals {
+  app_message_arn = "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/ivx-web/prod/APP_MESSAGE"
+}
 resource "aws_ecs_cluster" "main" {
   name = "${var.name}-cluster"
 }
@@ -20,6 +24,10 @@ resource "aws_ecs_task_definition" "web" {
     image        = "${data.aws_ecr_repository.web.repository_url}@${var.image_digest}"
     essential    = true
     portMappings = [{ containerPort = 8080, protocol = "tcp" }]
+    secrets = [{
+      name      = "APP_MESSAGE"
+      valueFrom = local.app_message_arn
+    }]
     logConfiguration = {
       logDriver = "awslogs"
       options = {

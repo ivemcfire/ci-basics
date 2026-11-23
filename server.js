@@ -5,5 +5,5 @@ const port = process.env.PORT || 8080;
 
 http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end(`ci-basics ok · 2+3=${sum(2, 3)} · sha=${process.env.GIT_SHA ?? 'dev'}\n`);
+  res.end(`ci-basics ok · 2+3=${sum(2, 3)} · sha=${process.env.GIT_SHA ?? 'dev'} · msg=${process.env.APP_MESSAGE ?? 'unset'}\n`);
 }).listen(port, () => console.log(`listening on ${port}`));

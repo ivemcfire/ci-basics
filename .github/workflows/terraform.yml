@@ -11,9 +11,9 @@ jobs:
       contents: read         # check out the repo
       pull-requests: write   # post the plan as a comment on the PR a PR comment
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-plan
           aws-region: eu-west-1
@@ -31,10 +31,15 @@ jobs:
       - run: terraform validate
         working-directory: infra
 
+      - name: current image digest
+        id: img
+        shell: bash
+        run: echo "digest=$(aws ecr describe-images --repository-name ci-basics --query 'sort_by(imageDetails,&imagePushedAt)[-1].imageDigest' --output text)" >> "$GITHUB_OUTPUT"
+
       - name: plan
         id: plan
         shell: bash
-        run: terraform plan -no-color -var home_cidr=${{ vars.HOME_CIDR }} 2>&1 | tee plan.txt
+        run: terraform plan -no-color -var home_cidr=${{ vars.HOME_CIDR }} -var image_digest=${{ steps.img.outputs.digest }} 2>&1 | tee plan.txt
         working-directory: infra
 
       - name: comment plan on PR

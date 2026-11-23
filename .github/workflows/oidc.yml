@@ -11,7 +11,7 @@ jobs:
   whoami:
     runs-on: ubuntu-latest
     steps:
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::817210751918:role/gha-ci-basics-deploy
           aws-region: eu-west-1
